@@ -1,0 +1,162 @@
+<?php
+/**
+ * This file is part of Onion
+ *
+ * Copyright (c) 2014-2016, Humberto Lourenço <betto@m3uzz.com>.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *
+ *   * Redistributions of source code must retain the above copyright
+ *     notice, this list of conditions and the following disclaimer.
+ *
+ *   * Redistributions in binary form must reproduce the above copyright
+ *     notice, this list of conditions and the following disclaimer in
+ *     the documentation and/or other materials provided with the
+ *     distribution.
+ *
+ *   * Neither the name of Humberto Lourenço nor the names of his
+ *     contributors may be used to endorse or promote products derived
+ *     from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+ * FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+ * COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+ * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+ * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ *
+ * @category   PHP
+ * @package    Onion
+ * @author     Humberto Lourenço <betto@m3uzz.com>
+ * @copyright  2014-2016 Humberto Lourenço <betto@m3uzz.com>
+ * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
+ * @link       http://github.com/m3uzz/onionfw
+ */
+ 
+use Onion\Log\Debug;
+use Onion\I18n\Translator;
+
+$gaBackend = Onion\Config\Config::getAppOptions('admin');
+$gaMeta = $gaBackend['meta'];
+
+$laMessages = $loForm->get('stUsername')->getMessages();
+
+if (is_array($laMessages))
+{
+	foreach ($laMessages as $lsMsg)
+	{
+		$this->flashMessenger()->addMessage(array('id'=>$this->get('_sModule') . '-' . microtime(true), 'hidden'=>$this->get('_bHiddenPushMessage'), 'push'=>$this->get('_bPushMessage'), 'type'=>'danger', 'msg'=>$lsMsg));
+	}
+}
+
+$laMessages = $loForm->get('stPassword')->getMessages();
+
+if (is_array($laMessages))
+{
+	foreach ($laMessages as $lsMsg)
+	{
+		$this->flashMessenger()->addMessage(array('id'=>$this->get('_sModule') . '-' . microtime(true), 'hidden'=>$this->get('_bHiddenPushMessage'), 'push'=>$this->get('_bPushMessage'), 'type'=>'danger', 'msg'=>$lsMsg));
+	}
+}
+
+$this->headTitle($lsTitle);
+
+$loForm->setAttribute('action', $this->url($lsRoute, array('action'=>'login')));
+
+$loForm->prepare();
+
+$this->headLink()->prependStylesheet($this->basePath('/vendor/onion/css/form.css'));
+
+echo $this->form()->openTag($loForm);
+
+$lsLogo = '<div class="bg-primary"><h1>' . $gaMeta['sysName'] . '</h1></div>';
+
+if (!empty($gaMeta['admLogo']))
+{
+	$lsLogo = '<img src="' . $this->basePath($gaMeta['admLogo']) . '" style="max-width:100%;" alt="' . $gaMeta['siteTitle'] . '"/>';
+}
+
+echo '<div class="row">';
+	echo '<div class="col-md-4">';
+	echo '</div>';
+	echo '<div class="col-md-4">';
+		echo '<div class="row">';
+			echo '<div class="col-md-12">';
+				echo '<center>' . $lsLogo . '</center>';
+				echo '<p></p>';
+			echo '</div>';
+		echo '</div>';
+		echo '<div class="panel panel-default">';
+			echo '<div class="panel-body">';
+				echo '<div class="row">';
+					echo '<div class="col-md-10">';
+						echo '<strong>' . Translator::i18n('Acesso') . '</strong>';
+					echo '</div>';
+					echo '<div class="col-md-2">';
+						echo '<div class="pull-right">';
+							echo '<i class="glyphicon glyphicon-lock"></i>';
+						echo '</div>';
+					echo '</div>';
+				echo '</div>';
+				echo '<hr/>';
+				echo '<input type="hidden" name="urlFrom" value="' . $lsUrlFrom . '">';
+				echo $this->formRow($loForm->get('security'));
+				echo '<div class="input-group input-group-sm col-sm-12">';
+					echo $this->formRow($loForm->get('stUsername'));
+					echo '<i class="requiredMark"></i>';
+					echo '<span class="hintHelp"></span>';
+				echo '</div>';
+				echo '<div class="input-group input-group-sm col-sm-12">';
+					echo $this->formRow($loForm->get('stPassword'));
+					echo '<i class="requiredMark"></i>';
+					echo '<span class="hintHelp"></span>';
+				echo '</div>';
+				echo '<div class="row">';
+					echo '<div class="col-md-8">';
+						echo $this->formRow($loForm->get('rememberme'));
+					echo '</div>';
+					echo '<div class="col-md-4">';
+						echo '<div class="pull-right">';
+							echo '<button name="submit" id="submitbtn" class="btn btn-primary btn-xs">' . Translator::i18n('Login') . ' <i class="glyphicon glyphicon-log-in"></i></button>';
+						echo '</div>';
+					echo '</div>';
+				echo '</div>';				
+			echo '</div>';
+			echo '<div class="panel-footer">';
+				echo '<a href="/' . $lsRoute . '/forgotten-password">' . Translator::i18n('Esqueceu sua senha?') . '</a>';
+				//echo ' - <a href="/' . $lsRoute . '/register">' . Translator::i18n('Registrar') . '</a>';
+			echo '</div>';
+		echo '</div>';
+		
+	echo '</div>';
+	echo '<div class="col-md-4">';
+	echo '</div>';
+echo '</div>';			
+	
+echo $this->form()->closeTag();
+
+echo $this->inlineScript()->prependFile($this->basePath('/vendor/onion/js/form.js'));
+
+$laMessages = $this->flashMessenger()->getCurrentMessages();
+
+if (is_array($laMessages))
+{
+	foreach ($laMessages as $lnKey => $laMessage)
+	{
+		echo '<div class="alert alert-' . $laMessage['type'] . ' alert-dismissable"  style="width:500px; margin:auto;">';
+		echo '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>';
+		echo $laMessage['msg'];
+		echo '</div>';
+	}
+	
+	echo '<br/><br/>';
+}
