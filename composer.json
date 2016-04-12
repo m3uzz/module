@@ -15,7 +15,7 @@
         "onionfw",
         "cms",
         "framework",
-        "modules
+        "modules"
     ],
     "type": "library",
     "repositories": [
