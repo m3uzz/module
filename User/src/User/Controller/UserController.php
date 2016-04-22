@@ -145,6 +145,61 @@ class UserController extends ControllerAction
 		$this->_sSearchLabelField = 'stUsername';
 		
 		$this->_nSearchGridNumRows = 6;
+		
+		$this->_aMassActions = array(
+
+			'Move' => array(
+				'title' => 'Mover para lixeira',
+				'description' => 'Mover registros marcados para a lixeira',
+				'message' => 'Você tem certeza que deseja mover os registros selecionados para a lixeira?',
+				'icon' => 'glyphicon glyphicon-trash',
+				'url' => '/' . $this->_sRoute . '/move-list',
+				'folder' => array('index' => true),
+				'class' => 'massActBtn'
+			),
+			'Restore' => array(
+				'title' => 'Restaurar para entrada',
+				'description' => 'Restaurar regisros marcados da lixeira para a entrada',
+				'message' => 'Você tem certeza que deseja mover os registros selecionados para a lixeira?',
+				'icon' => 'glyphicon glyphicon-transfer',
+				'url' => '/' . $this->_sRoute . '/move-list',
+				'folder' => array('trash' => true),
+				'class' => 'massActBtn'
+			)
+		);
+		
+		$this->_aIndividualButtons = array(
+			'Edit' => array(
+				'title' => 'Editar',
+				'description' => 'Editar registro',
+				'message' => '',
+				'icon' => 'glyphicon glyphicon-edit',
+				'url' => '/'. $this->_sRoute . '/edit/',
+				'folder' => '',
+				'class' => 'rowActBtn',
+				'params' => ''
+			),
+			'Trash' => array(
+				'title' => 'Deletar',
+				'description' => 'Mover o registro para a lixeira',
+				'message' => 'Você tem certeza que deseja mover o registro para a lixeira?',
+				'icon' => 'glyphicon glyphicon-trash',
+				'url' => '/'. $this->_sRoute . '/move/',
+				'folder' => 'index',
+				'class' => 'rowActBtn',
+				'params' => ''
+			),
+			'Restore' => array(
+				'title' => 'Restaurar',
+				'description' => 'Restaurar regisro da lixeira para a entrada',
+				'message' => 'Você tem certeza que deseja mover o registro para a entrada?',
+				'icon' => 'glyphicon glyphicon-transfer',
+				'url' => '/'. $this->_sRoute . '/move/',
+				'folder' => 'trash',
+				'class' => 'rowActBtn',
+				'params' => ''
+			),
+		);
 	}
 
 	
