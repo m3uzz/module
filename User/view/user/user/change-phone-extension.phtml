@@ -58,7 +58,7 @@ $lsForm = '
 			<div id="ChangePhoneExtensionContainer" >
 				<div class="row">';
 
-$lsForm .= $this->headLink()->appendStylesheet($this->basePath('/vendor/onion/css/form.css'));
+$lsForm .= $this->headLink()->appendStylesheet($this->basePath('/vendor//m3uzz/onionjs-0.16.4/dist/css/form.css'));
 
 $lsForm .= $loForm->getFlashMessage($this);
 
@@ -72,7 +72,7 @@ $lsForm .= $loForm->renderFieldSet($this);
 
 $lsForm .= $this->form()->closeTag();
 
-$lsForm .= $this->inlineScript()->prependFile($this->basePath('/vendor/onion/js/form.js'));
+$lsForm .= $this->inlineScript()->prependFile($this->basePath('/vendor//m3uzz/onionjs-0.16.4/dist/js/form.js'));
 
 $lsForm .= '
 				</div>

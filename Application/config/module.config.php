@@ -125,10 +125,10 @@ return array(
         'not_found_template'       => 'error/404',
         'exception_template'       => 'error/index',
         'template_map' => array(
-        	'layout/layout' => BASE_DIR . '/layout/theme/basic/layout.phtml',
-        	'layout/login' => BASE_DIR . '/layout/theme/basic/login.phtml',
-        	'layout/popup' => BASE_DIR . '/layout/theme/basic/popup.phtml',
-        	'layout/container' => BASE_DIR . '/layout/theme/basic/container.phtml',
+        	'layout/layout' => BASE_DIR . '/layout/theme/lumino/layout.phtml',
+        	'layout/login' => BASE_DIR . '/layout/theme/lumino/login.phtml',
+        	'layout/popup' => BASE_DIR . '/layout/theme/lumino/popup.phtml',
+        	'layout/container' => BASE_DIR . '/layout/theme/lumino/container.phtml',
             'error/404' => BASE_DIR . '/layout/theme/exception/404.phtml',
             'error/index' => BASE_DIR . '/layout/theme/exception/index.phtml'
         ),
