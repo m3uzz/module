@@ -159,6 +159,7 @@ class ContactUsController extends ControllerActionBase
 			}
 			else
 			{
+			    Debug::display($_POST);
 				Debug::display('not');
 			}
 		}

@@ -124,7 +124,7 @@ class ContactUsForm extends Form
 						'for' => 'fromMail'
 					)
 				));
-		
+		/*
 		$this->add(
 				array(
 					'name' => 'fromPhone',
@@ -144,7 +144,7 @@ class ContactUsForm extends Form
 						'for' => 'fromPhone'
 					)
 				));
-		
+		*/
 		$this->add(
 				array(
 					'name' => 'subject',
