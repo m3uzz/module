@@ -128,8 +128,8 @@ class AccessController extends ControllerActionBase
 				$loAuthService = $this->getServiceLocator()->get('Zend\Authentication\AuthenticationService');
 				
 				$loAdapter = $loAuthService->getAdapter();
-				$loAdapter->setIdentityValue($laData['stUsername']);
-				$loAdapter->setCredentialValue($laData['stPassword']);
+				$loAdapter->setIdentity($laData['stUsername']);
+				$loAdapter->setCredential($laData['stPassword']);
 				$loAuthResult = $loAuthService->authenticate();
 				
 				if ($loAuthResult->isValid())
