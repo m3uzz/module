@@ -95,7 +95,7 @@ class ForgottenPasswordForm extends Form
 				'id' => 'stEmail',
 				'type'  => 'Email',
 				'placeholder' => Translator::i18n('E-mail cadastrado'),
-				'class'	=> 'form-control',
+				'class'	=> 'form-control noUpper',
 				'required' => 'required',
 				'title'	=> Translator::i18n('E-mail cadastrado'),
 			),

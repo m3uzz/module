@@ -62,6 +62,7 @@ use \Facebook\FacebookRequest;
 use \Facebook\FacebookRequestException;
 use \Facebook\FacebookRedirectLoginHelper;
 use Onion\Json\Json;
+use Onion\Lib\Session;
 
 class AccessController extends ControllerActionBase
 {
@@ -212,16 +213,22 @@ class AccessController extends ControllerActionBase
 	 */
 	public function logoutAction ()
 	{
-		$loAuth = $this->getServiceLocator()->get('Zend\Authentication\AuthenticationService');
+	    $loSession = new Session();
+		$loIdentity = $loSession->getRegister('OnionAuth');
+		//$loAuth = $this->getServiceLocator()->get('Zend\Authentication\AuthenticationService');
 		
-		if ($loAuth->hasIdentity())
+		//if ($loAuth->hasIdentity())
+		if (is_object($loIdentity))
 		{
-			$loIdentity = $loAuth->getIdentity();
+			//$loIdentity = $loAuth->getIdentity();
 			Debug::debug('[THERE IS IDENTITY]');
 			Access::log($loIdentity, "LOGOUT");
 		}
 		
-		$loAuth->clearIdentity();
+		//$loAuth->clearIdentity();
+		$loSession = new Session();
+		$loSession->clearRegister('OnionAuth');
+		$loSession->clearRegister('storage', 'Zend_Auth');
 		
 		$loSessionManager = new SessionManager();
 		$loSessionManager->forgetMe();
@@ -465,6 +472,14 @@ class AccessController extends ControllerActionBase
 			
 			if (Context::hasContextAccess($laUserContext))
 			{
+			    $loSession = new Session();
+			    $poIdentity->getObject();
+			    $poIdentity->set('stPassword', 'nono');
+			    $poIdentity->set('stPasswordSalt', '');
+			    $poIdentity->set('stAnswer', '');
+			    $loSession->setRegister('OnionAuth', $poIdentity);
+			    $loIdentity = $loSession->getRegister('OnionAuth');
+		        
 				$poAuthService->getStorage()->write($poIdentity);
 				
 				if (isset($laData['rememberme']))
@@ -484,8 +499,10 @@ class AccessController extends ControllerActionBase
 					{
 						$psUrlFrom = base64_decode($psUrlFrom);
 					}
-				
-					return $this->redirect()->toUrl($psUrlFrom);
+					
+				    Debug::debug("Redirect to: ($psUrlFrom)");
+				    
+					$this->redirect()->toUrl($psUrlFrom);
 				}
 			}
 			else

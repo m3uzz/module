@@ -121,7 +121,7 @@ return array(
 						$psPasswordGiven = md5($laOptions['staticSalt'] . $psPasswordGiven . $poUser->getPasswordSalt());
 					}
 					
-					if ($poUser->getPassword() == $psPasswordGiven)
+					if ($poUser->getPassword() === $psPasswordGiven)
 					{
 						return true;
 					}

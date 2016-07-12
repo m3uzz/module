@@ -50,6 +50,7 @@ use Onion\Acl\Acl;
 use Onion\Config\Config;
 use Onion\Log\Debug;
 use Onion\I18n\Translator;
+use Onion\Lib\Session;
 
 class Module
 {
@@ -107,16 +108,26 @@ class Module
 		$loEventManager    = $loApplication->getEventManager();
 		$loEvents = $loEventManager->getSharedManager();
 
-		$loAuth = $loServiceManager->get('Zend\Authentication\AuthenticationService');
+		$loSession = new Session();
+		$loUser = $loSession->getRegister('OnionAuth');
 
 		$laMenu = Config::getAppOptions('menu');
 		$lsRole = Acl::DEFAULT_ROLE; //guest
-		$loUser =  null;
-		
-		if ($loAuth->hasIdentity())
+
+        /*		
+		if ($loUser === null)
 		{
-			$loUser = $loAuth->getIdentity();
-			//Debug::display($loUser);
+		    $loAuth = $loServiceManager->get('Zend\Authentication\AuthenticationService');
+		
+		    if ($loAuth->hasIdentity())
+		    {
+			    $loUser = $loAuth->getIdentity();
+		    }
+		}
+		*/
+		
+		if ($loUser !== null)
+		{
 			$lnGroup = $loUser->get('UserGroup_id'); 
 
 			if(isset($laMenu['groups'][$lnGroup]))
@@ -154,6 +165,8 @@ class Module
 		{
 			throw new \Exception('Resource ' . $lsController . ' not defined');
 		}
+		
+		Debug::debug("Route: $lsController/$lsAction");
 		
 		if (!$loAcl->isAllowed($lsRole, $lsController, $lsAction))
 		{

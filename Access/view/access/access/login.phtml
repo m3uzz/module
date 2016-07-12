@@ -74,7 +74,7 @@ $loForm->setAttribute('action', $this->url($lsRoute, array('action'=>'login')));
 
 $loForm->prepare();
 
-$this->headLink()->prependStylesheet($this->basePath('/vendor//m3uzz/onionjs-0.16.4/dist/css/form.css'));
+$this->headLink()->prependStylesheet($this->basePath('/vendor/m3uzz/onionjs-0.16.4/dist/css/form.css'));
 
 echo $this->form()->openTag($loForm);
 
@@ -144,7 +144,7 @@ echo '</div>';
 	
 echo $this->form()->closeTag();
 
-echo $this->inlineScript()->prependFile($this->basePath('/vendor//m3uzz/onionjs-0.16.4/dist/js/form.js'));
+echo $this->inlineScript()->prependFile($this->basePath('/vendor/m3uzz/onionjs-0.16.4/dist/js/form.js'));
 
 $laMessages = $this->flashMessenger()->getCurrentMessages();
 

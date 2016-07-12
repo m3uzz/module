@@ -94,7 +94,7 @@ class AccessForm extends Form
 						'type' => 'text',
 						'required' => true,
 						'placeholder' => Translator::i18n('Login de acesso'),
-						'class' => 'form-control',
+						'class' => 'form-control noUpper',
 						'title' => Translator::i18n('Login de acesso'),
 					),
 					'options' => array(
@@ -111,7 +111,7 @@ class AccessForm extends Form
 						'type' => 'password',
 						'required' => true,
 						'placeholder' => Translator::i18n('Senha de acesso'),
-						'class' => 'form-control',
+						'class' => 'form-control noUpper',
 						'title' => Translator::i18n('Senha de acesso'),
 					),
 					'options' => array(
