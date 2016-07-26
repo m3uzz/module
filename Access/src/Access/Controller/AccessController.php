@@ -473,6 +473,9 @@ class AccessController extends ControllerActionBase
 			if (Context::hasContextAccess($laUserContext))
 			{
 			    $loSession = new Session();
+		        $loSession->clearRegister('OnionAuth');
+		        $loSession->clearRegister('storage', 'Zend_Auth');
+		        
 			    $poIdentity->getObject();
 			    $poIdentity->set('stPassword', 'nono');
 			    $poIdentity->set('stPasswordSalt', '');

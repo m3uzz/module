@@ -142,7 +142,7 @@ class UserForm extends Form
 						'for' => 'stUsername'
 					)
 				));
-		
+		/*
 		if ($this->getActionType() == 'edit')
 		{
 			$this->add(
@@ -164,7 +164,7 @@ class UserForm extends Form
 						)
 					));
 		}
-		
+		*/
 		$this->add(
 				array(
 					'name' => 'stPassword',
@@ -571,8 +571,82 @@ class UserForm extends Form
 
 		return $loInputFilter;
 	}
+	
 
 	public function isValid ()
+	{
+		$lbValid = parent::isValid();
+		
+		if ($this->getActionType() == 'add')
+		{
+			$loFound = $this->getObjectManager()
+				->getRepository($this->_sEntity)
+				->findOneBy(array(
+				'stUsername' => String::escapeString($this->data['stUsername'])
+			));
+			
+			if (is_object($loFound))
+			{
+				$lbValid = false;
+				$this->get('stUsername')->setMessages(array(
+					Translator::i18n('Este nome de usuário já está sendo utilizado!')
+				));
+			}
+			
+			$loFound = $this->getObjectManager()
+				->getRepository($this->_sEntity)
+				->findOneBy(array(
+				'stEmail' => String::escapeString($this->data['stEmail'])
+			));
+			
+			if (is_object($loFound))
+			{
+				$lbValid = false;
+				$this->get('stEmail')->setMessages(array(
+					Translator::i18n('Este email de contato já está sendo utilizado!')
+				));
+			}
+			
+			if ($this->data['stPassword'] != $this->data['stConfirmation'])
+			{
+				$lbValid = false;
+				$this->get('stConfirmation')->setMessages(array(
+					Translator::i18n('A confirmação da senha não confere!')
+				));
+			}
+		}
+		else
+		{
+			$this->data['stUsername'] = $this->getEntityData()->get('stUsername');
+
+			$loFound = $this->getObjectManager()
+				->getRepository($this->_sEntity)
+				->findOneBy(array(
+					'stEmail' => String::escapeString($this->data['stEmail'])
+			));
+
+			if (is_object($loFound) && $loFound->get('id') != $this->data['id'])
+			{
+				$lbValid = false;
+				$this->get('stEmail')->setMessages(array(
+					Translator::i18n('Este email de contato já está sendo utilizado!')
+				));
+			}
+
+    		if ($this->data['stPassword'] != $this->data['stConfirmation'])
+			{
+				$lbValid = false;
+				$this->get('stConfirmation')->setMessages(array(
+					Translator::i18n('A confirmação não confere com a senha!')
+				));
+			}
+		}
+		
+		return $lbValid;
+	}
+	
+
+	public function isValidx ()
 	{
 		$lbValid = parent::isValid();
 		
