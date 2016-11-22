@@ -68,6 +68,24 @@ class CategoryForm extends Form
 		
 		$this->_sCancelBtnType = 'cancel';
 		
+		$this->_aFieldSet = array(
+            'CompanyData' => array(
+                'label' => Translator::i18n('Categoria'),
+                'icon' => 'glyphicon glyphicon-cog',
+                'class' => '',
+                'fields' => array(
+                    'security',
+                    'id',
+					'stResource',
+                    'Category_id',
+                    'CategoryLabel',
+					'stValue',
+					'stLabel',
+					'stLocale',
+                )
+            ),
+        );
+		
 		// we want to ignore the name passed
 		parent::__construct($this->_sForm);
 	}
@@ -93,52 +111,117 @@ class CategoryForm extends Form
 			)
 		));
 		
-		$this->add(
-				array(
-					'name' => 'stResource',
-					'attributes' => array(
-						'id' => 'stResource',
-						'type' => 'text',
-						'placeholder' => 'Resource',
-						'class' => 'form-control',
-						'required' => true,
-						'title' => 'Resource'
-					),
-					'options' => array(
-						'label' => 'Resource: ',
-						'for' => 'stResource'
-					)
-				));
 		
-		$this->add(
-				array(
-					'name' => 'stValue',
-					'attributes' => array(
-						'id' => 'stValue',
-						'type' => 'text',
-						'placeholder' => 'Value',
-						'class' => 'form-control'
-					),
-					'options' => array(
-						'label' => 'Value: ',
-						'for' => 'stValue'
-					)
-				));
+		$this->add(array(
+			'name' => 'stResource',
+		    'type' => 'Select',
+			'attributes' => array(
+				'id' => 'stResource',
+				'title' => Translator::i18n('Módulo que irá utilizar as categorias'),
+				'class' => 'form-control noUpper',
+				'required' => true,
+			),
+			'options' => array(
+				'label' => Translator::i18n('Recurso') . ': ',
+				'for' => 'stResource',
+				'length' => 6,
+				'empty_option' => Translator::i18n('--- Selecione ---'),
+				'value_options' => array(
+				)			        
+			)
+		));
 		
-		$this->add(
-				array(
-					'name' => 'Category_id',
-					'attributes' => array(
-						'id' => 'Category_id',
-						'type' => 'text',
-						'placeholder' => 'Category',
-						'class' => 'form-control'
-					),
-					'options' => array(
-						'label' => 'Category: ',
-						'for' => 'Category_id'
-					)
-				));
+		
+		
+		$this->add(array(
+			'name' => 'Category_id',
+			'attributes' => array(
+				'id' => 'Category_id',
+				'type' => 'hidden',
+				'required' => false,
+			)
+		));
+
+		
+		$this->add(array(
+			'name' => 'CategoryLabel',
+			'attributes' => array(
+				'id' => 'CategoryLabel',
+				'type'  => 'text',
+				'class'	=> 'form-control',
+				'title'	=> Translator::i18n('Categoria pai'),
+				'required' => false,
+			),
+			'options' => array(
+				'label' => Translator::i18n('Categoria pai') . ': ',
+				'for' => 'CategoryLabel',
+				'data-type' => 'openModalBtn',
+				'openModalBtn' => array(
+					'data-title' => Translator::i18n('Selecione a categoria'),
+					'data-btn' => Translator::i18n('Selecione'),
+					'data-act' => '/category/search-select',
+					'data-return' => 'Category_id',
+				),
+			),
+		));
+		
+		
+		$this->add(array(
+			'name' => 'stValue',
+			'attributes' => array(
+				'id' => 'stValue',
+				'type' => 'text',
+				'title' => Translator::i18n(''),
+				'class' => 'form-control noUpper',
+				'required' => true,
+				'placeholder' => Translator::i18n(''),
+			),
+			'options' => array(
+				'label' => Translator::i18n('Valor') . ': ',
+				'for' => 'stValue',
+				'length' => 6,
+			)
+		));
+
+
+		$this->add(array(
+			'name' => 'stLabel',
+			'attributes' => array(
+				'id' => 'stLabel',
+				'type' => 'text',
+				'title' => Translator::i18n('Título para o valor'),
+				'class' => 'form-control noUpper',
+				'required' => true,
+				'placeholder' => Translator::i18n('Título para o valor'),
+			),
+			'options' => array(
+				'label' => Translator::i18n('Título') . ': ',
+				'for' => 'stLabel',
+				'length' => 6,
+			)
+		));
+
+
+		$this->add(array(
+			'name' => 'stLocale',
+		    'type' => 'Select',
+			'attributes' => array(
+				'id' => 'stLocale',
+				'title' => Translator::i18n('Língua'),
+				'class' => 'form-control noUpper',
+				'required' => true,
+			    'value' => 'pt-br'
+			),
+			'options' => array(
+				'label' => Translator::i18n('Língua') . ': ',
+				'for' => 'stLocale',
+				'length' => 6,
+				'empty_option' => Translator::i18n('--- Selecione ---'),
+				'value_options' => array(
+				)			        
+			)
+		));
+		
 		
 		$this->add(new Csrf('security'));
 		

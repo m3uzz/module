@@ -51,13 +51,17 @@ use Onion\Paginator\Pagination;
 use Onion\Application\Application;
 use Onion\Lib\Search;
 use Onion\Lib\String;
+use Onion\File\System;
 use Onion\Lib\UrlRequest;
 use Onion\Export\Pdf;
 use Onion\Config\Config;
+use \Zend\Session\SessionManager;
 
 class LogAccessController extends ControllerAction
 {
-
+    protected $_sSessionId = null;
+    
+    protected $_oSessionManager = null;
 
 	/**
 	 *
@@ -79,6 +83,8 @@ class LogAccessController extends ControllerAction
 		$this->_sEntityExtended = 'LogAccess\Entity\LogAccessExtended';
 	
 		$this->_sForm = 'LogAccess\Form\LogAccessForm';
+		
+		//$this->_sGrid = 'LogAccess\Grid\LogAccessGrid';
 	
 		$this->_sTitleS = Translator::i18n('Log de Acesso');
 	
@@ -98,14 +104,25 @@ class LogAccessController extends ControllerAction
 		
 		$this->_aGridCols = array(
 			'dtInsert' => Translator::i18n('Data'),
-			'User_id' => Translator::i18n('User Id'),
+			'User_id' => Translator::i18n('UserId'),
 			Translator::i18n('User Login'),
 			Translator::i18n('User Grupo'),
 			'stIP' => Translator::i18n('IP'),
-			'txtServer' =>  Translator::i18n('Status'),
+			Translator::i18n('Status'),
+		    'stSession' =>  Translator::i18n('Session'),
+		    'time' =>  Translator::i18n('Time'),
 		);
 		
-		$this->_aGridAlign = array();
+		$this->_aGridAlign = array(
+			'left',
+			'left',
+			'left',
+			'left',
+			'left',
+			'left',
+		    'center',
+		    'left'		        
+		);
 		
 		$this->_aGridWidth = array();
 		
@@ -117,7 +134,9 @@ class LogAccessController extends ControllerAction
 			'UserName',
 			'UserGroup',
 			'stIP',
-			'txtServer'
+			'txtServer',
+		    'stSession',
+		    'time'
 		);
 		
 		$this->_nGridNumRows = 30;
@@ -154,6 +173,8 @@ class LogAccessController extends ControllerAction
 		$this->_aIndividualButtons = array();
 		
 		$this->_bShowToolbar = false;
+		
+		$this->_oSessionManager = new SessionManager();
 	}
 	
 	
@@ -169,8 +190,15 @@ class LogAccessController extends ControllerAction
 		$loForm->setShowCollapseBtn(true);
 		$loForm->setCollapsed(true);
 		$loForm->setData($this->requestAll());
-	
-		$lsGrid = $this->grid(0, 1, 'filter');
+		
+		if ($this->_sGrid != null)
+	    {
+	        $lsGrid = $this->gridRender(0, 1, 'filter');
+	    }
+	    else 
+	    {
+		    $lsGrid = $this->grid(0, 1, 'filter');
+	    }
 	
 		$loView = new ViewModel(array(
 			'loForm' => $loForm,
@@ -190,7 +218,7 @@ class LogAccessController extends ControllerAction
 	 */
 	public function gridList($paParams)
 	{
-		$laParams['User_id'] = $this->request('User_id', null);
+		//$laParams['User_id'] = $this->request('User_id', null);
 		$laParams['stIP'] = $this->request('stIP', null);
 		$laParamsDt['dtPeriodInit'] = Translator::dateP2S($this->request('dtPeriodInit', date('Y-m-d', time())));// - 60*60*24)));
 		$laParamsDt['dtPeriodEnd'] = Translator::dateP2S($this->request('dtPeriodEnd', date('Y-m-d', time())));// - 60*60*24)));
@@ -224,6 +252,79 @@ class LogAccessController extends ControllerAction
 	}
 	
 	
+	
+    private function unserialize($psSessionData) 
+    {
+        $lsMethod = ini_get("session.serialize_handler");
+        
+        switch ($lsMethod) 
+        {
+            case "php":
+                return $this->unserialize_php($psSessionData);
+                break;
+            case "php_binary":
+                return $this->unserialize_phpbinary($psSessionData);
+                break;
+            default:
+                throw new Exception("Unsupported session.serialize_handler: " . $lsMethod . ". Supported: php, php_binary");
+        }
+    }
+    
+    
+	/**
+	 * 
+	 * @param string $psSessionData
+	 * @throws Exception
+	 */
+    private function unserialize_php($psSessionData) 
+    {
+        $laReturnData = array();
+        $lnOffset = 0;
+        
+        while ($lnOffset < strlen($psSessionData)) 
+        {
+            if (!strstr(substr($psSessionData, $lnOffset), "|")) 
+            {
+                throw new Exception("invalid data, remaining: " . substr($psSessionData, $lnOffset));
+            }
+            
+            $lnPos = strpos($psSessionData, "|", $lnOffset);
+            $lnNum = $lnPos - $lnOffset;
+            $lsVarName = substr($psSessionData, $lnOffset, $lnNum);
+            $lnOffset += $lnNum + 1;
+            $laData = unserialize(substr($psSessionData, $lnOffset));
+            $laReturnData[$lsVarName] = $laData;
+            $lnOffset += strlen(serialize($laData));
+        }
+        
+        return $laReturnData;
+    }
+    
+    /**
+     * 
+     * @param string $psSessionData
+     * @return mixed[]
+     */
+    private function unserialize_phpbinary($psSessionData) 
+    {
+        $laReturnData = array();
+        $lnOffset = 0;
+        
+        while ($lnOffset < strlen($psSessionData)) 
+        {
+            $lnNum = ord($psSessionData[$lnOffset]);
+            $lnOffset += 1;
+            $lsVarName = substr($psSessionData, $lnOffset, $lnNum);
+            $lnOffset += $lnNum;
+            $laData = unserialize(substr($psSessionData, $lnOffset));
+            $laReturnData[$lsVarName] = $laData;
+            $lnOffset += strlen(serialize($laData));
+        }
+        
+        return $laReturnData;
+    }
+    
+	
 	/**
 	 *
 	 * @param string $psField
@@ -238,10 +339,86 @@ class LogAccessController extends ControllerAction
 			case 'dtUpdate':
 				return String::getDateTimeFormat($pmValue);
 				break;
+			case 'txtServer':
+			    $paValue = json_decode($pmValue, true);
+			    $lsUserAgent = isset($paValue['HTTP_USER_AGENT']) ? $paValue['HTTP_USER_AGENT'] : '';
+			    $lsAccessMsg = isset($paValue['ACCESS_MSG']) ? $paValue['ACCESS_MSG'] : '';
+			    
+			    return "{$lsAccessMsg} | {$lsUserAgent}"; 
+			    break;
+			case 'time':
+			    $lsSessionId = session_id();
+			    //session_id($this->_sSessionId);
+			   // $lnExpire = session_cache_expire();
+			    
+			    //session_id($lsSessionId);
+			    
+			    return $lnExpire;
+			    break;
+			case 'stSession':
+			    $this->_sSessionId = $pmValue;
+			    $lbSessionAlive = false;
+			    $lsSessionFile = session_save_path() . DS . 'sess_' . $pmValue;
+			    
+			    if (file_exists($lsSessionFile))
+			    {
+			        $lsSession = System::localRequest($lsSessionFile);
+			        $laSession = $this->unserialize($lsSession);
+			        
+			        if (is_array($laSession) && isset($laSession['ONION']) && !empty($laSession['ONION']))
+			        {
+			            $lbSessionAlive = true; 
+			        }
+			    }
+			    
+//			    $this->_oSessionManager->regenerateId($this->_sSessionId);
+//			    $lnStatus = $this->_oSessionManager->isValid();
+//			    $loId = $this->_oSessionManager->getStorage();
+//			    Debug::display(date('Y-m-d H:i:s', $loId->getRequestAccessTime()));
+//			    Debug::display($loId->toArray());
+			   // $this->_oSessionManager->regenerateId($lsSessionId);
+			    
+			    if ($lbSessionAlive)
+			    {
+			        return '<a href="/log-access/kill-session/?id=' . $pmValue . '"><i class="glyphicon glyphicon-ok-sign text-success" title="' . $pmValue . '"></i></a>';
+			    }
+			    else
+			    {
+			        return '<i class="glyphicon glyphicon-remove-sign text-danger" title="' . $pmValue . '"></i>';
+			    }
+			    break;
 			default:
 				return $pmValue;
 		}
 	}
+	
+	
+	/**
+	 * 
+	 */
+	public function killSessionAction ()
+	{
+	    /*
+	    $lnId = $this->request('id', null);
+	    $this->_sResponse = 'ajax';
+	    
+	    if ($lnId !== null)
+		{
+	        //$loEntity = $this->getEntityManager()->find($this->_sEntity, $lnId);
+	        
+	        //$lsSession = $loEntity->get('stSession');
+	        
+	        $lsSessionFile = session_save_path() . DS . 'sess_' . $lnId;
+	        
+	        if (file_exists($lsSessionFile))
+	        {
+	            System::removeFile($lsSessionFile);
+	        }
+		}
+		*/
+        return $this->redirect()->toRoute($this->_sRoute);
+	}
+	
 	
 	/**
 	 *

@@ -84,7 +84,7 @@ class ChangePhoneExtensionForm extends Form
 						'id' => 'stPhoneExtension',
 						'type' => 'text',
 						'placeholder' => Translator::i18n('Novo ramal'),
-						'class' => 'form-control',
+						'class' => 'form-control noUpper',
 						'required' => true,
 						'title' => Translator::i18n('Novo ramal'),
 						'data-mask' => '9999'

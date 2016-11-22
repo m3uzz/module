@@ -62,7 +62,7 @@ class UserGrid extends Grid
 		
 		//$this->_sResponse = 'html';
 
-		$this->setTitle(Translator::i18n('User'));
+		$this->setTitle(Translator::i18n('Usuários'));
 
 		$this->setDescription('Description');
 		
@@ -80,41 +80,42 @@ class UserGrid extends Grid
 		
 		$this->setOrder('ASC');
 		
-		$this->setShowColOptions(false);
+		$this->setShowColOptions(true);
 		
 		$this->setPaginationNumRows(array('6', '12', '25', '50', '100'));
 		
-		$this->setNumRows(25);
+		$this->setNumRows(12);
 		
 		$this->setShowPaginationNumRows(true);
 		
 		$this->setShowPaginationInfo(true);
 		
-		$this->setShowPaginationNav(false);
+		$this->setShowPaginationNav(true);
 		
 		
 		$this->createColumn('id')
-			->setOrdering('')
+//			->setOrdering('')
 			->setTitle(Translator::i18n('Id'))
-			->setDescription('bla bla')
-			->setHelp('')
-			->setIcon('')
+//			->setDescription('')
+//			->setHelp('')
+//			->setIcon('')
 			->setSortable(true)
 			->setVisible(true)
 			->setSearchable(true)
 			->setResizable(true)
-			->setClass('')
+//			->setClass('')
 			->setWidth('3%')
 			->setAlign('center')
-			->setColor('blue')
-			->setBackground('#f6f6f6')
-			->setFormat('');
+//			->setColor('blue')
+//			->setBackground('#f6f6f6')
+//			->setFormat('')
+		;
 		
 		$this->createColumn('UserGroupName')
 			->setOrdering('UserGroup')
 			->setSearchable(false)
 			->setSortable(true)
-			->setTitle(Translator::i18n('Group'))
+			->setTitle(Translator::i18n('Grupo'))
 			->createButton('group-view')
 			->setTitle(' ')
 			->setIcon('eye-open')
@@ -133,13 +134,13 @@ class UserGrid extends Grid
 		$this->createColumn('stUsername')
 			->setSearchable(false)
 			->setSortable(true)
-			->setTitle(Translator::i18n('User'));
+			->setTitle(Translator::i18n('Usuário'));
 		
 		$this->createColumn('PersonName')
 			->setOrdering('Person')
 			->setSearchable(false)
 			->setSortable(true)
-			->setTitle(Translator::i18n('Name'))
+			->setTitle(Translator::i18n('Nome'))
 			->createButton('person-view')
 			->setTitle(' ')
 			->setIcon('eye-open')
@@ -156,14 +157,14 @@ class UserGrid extends Grid
 			->setRequest('ajax');
 		
 		$this->createColumn('dtInsert')
-			->setTitle(Translator::i18n('Registred'))
+			->setTitle(Translator::i18n('Cadastro'))
 			->setSearchable(false)
 			->setSortable(true);
 		
 		
 		//$this->createColOptions('view');
 		//$this->createColOptions('edit');
-		//$this->createColOptions('delete');
+		$this->createColOptions('delete');
 		
 		return $this;
 	}

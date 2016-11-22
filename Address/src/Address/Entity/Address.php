@@ -71,51 +71,29 @@ abstract class Address extends Entity
 	protected $User_id;
 
 	/**
-	 * @ORM\Column(type="integer")
+	 * @ORM\Column(type="string")
 	 */
-	protected $Country_id;
-	
-	protected $Country;
-	
-	protected $CountryName;
+	protected $stCountry;
 
 	/**
-	 * @ORM\Column(type="integer")
+	 * @ORM\Column(type="string")
 	 */
-	protected $Estate_id;
-
-	protected $Estate;
-	
-	protected $EstateName;
+	protected $stEstate;
 	
 	/**
-	 * @ORM\Column(type="integer")
+	 * @ORM\Column(type="string")
 	 */
-	protected $City_id;
-
-	protected $City;
-	
-	protected $CityName;
-	
-	protected $CityEstate;
+	protected $stCity;
 	
 	/**
-	 * @ORM\Column(type="integer")
+	 * @ORM\Column(type="string")
 	 */
-	protected $Street_id;
-			
-	protected $Street;
-	
-	protected $StreetName;
+	protected $stStreet;
 	
 	/**
-	 * @ORM\Column(type="integer")
+	 * @ORM\Column(type="string")
 	 */
-	protected $ZipCode_id;
-
-	protected $ZipCode;
-	
-	protected $ZipCodeNum;
+	protected $stZipCode;
 
 	/**
 	 * @ORM\Column(type="string")

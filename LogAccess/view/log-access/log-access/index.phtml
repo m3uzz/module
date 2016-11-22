@@ -41,12 +41,12 @@
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://github.com/m3uzz/onionfw
  */
- 
+
+use Onion\Log\Debug;
+
 $this->headTitle($lsTitleS);
-echo '<h1>' . $this->escapeHtml($lsTitleS) . '</h1>';
 
 $lsFilter = $loForm->renderGridFilterForm($this, $lsRoute, 'Filtros');
-
 echo preg_replace("/<!--#%FORM_FILTER%#-->/", $lsFilter, $lsGrid);
 
 echo $loForm->renderSeachModal();

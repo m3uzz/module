@@ -119,6 +119,7 @@ class PersonForm extends Form
 						'placeholder' => Translator::i18n('Sexo'),
 						'class' => 'form-control',
 						'title' => Translator::i18n('Sexo'),
+					    'required' => true,
 					),
 					'options' => array(
 						'label' => Translator::i18n('Sexo') . ': ',
@@ -140,7 +141,8 @@ class PersonForm extends Form
 						'placeholder' => 'YYYY-MM-DD',
 						'class' => 'form-control',
 						'title' => Translator::i18n('Data de nascimento'),
-						'data-mask' => '0000-00-00'
+						'data-mask' => '0000-00-00',
+					    'required' => true,
 					),
 					'options' => array(
 						'label' => Translator::i18n('Data de nascimento') . ': ',
@@ -225,8 +227,8 @@ class PersonForm extends Form
 						'type' => 'submit',
 						'value' => Translator::i18n('Salvar'),
 						'id' => 'submitbutton',
-						'class' => 'btn btn-primary'
-					)
+						'class' => 'btn btn-primary',
+    				)
 				));
 		
 		// Load and set the client specific configuration for this form

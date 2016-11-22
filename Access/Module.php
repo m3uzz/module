@@ -113,18 +113,6 @@ class Module
 
 		$laMenu = Config::getAppOptions('menu');
 		$lsRole = Acl::DEFAULT_ROLE; //guest
-
-        /*		
-		if ($loUser === null)
-		{
-		    $loAuth = $loServiceManager->get('Zend\Authentication\AuthenticationService');
-		
-		    if ($loAuth->hasIdentity())
-		    {
-			    $loUser = $loAuth->getIdentity();
-		    }
-		}
-		*/
 		
 		if ($loUser !== null)
 		{
@@ -143,6 +131,7 @@ class Module
 			$loController      = $event->getTarget();
 			$loController->layout()->laMenu = $laMenu;
 			$loController->layout()->loUser = $loUser;
+			$loController->layout()->loController = $loController;
 		}, 100);		
 				
 		$lsController = $loRouteMatch->getParam('__CONTROLLER__');

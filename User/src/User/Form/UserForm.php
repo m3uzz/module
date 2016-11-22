@@ -107,7 +107,7 @@ class UserForm extends Form
 			'attributes' => array(
 				'id' => 'UserGroupName',
 				'type'  => 'text',
-				'class'	=> 'form-control',
+				'class'	=> 'form-control noUpper',
 				'title'	=> Translator::i18n('Grupo de usuário'),
 				'required' => true,
 			),
@@ -131,7 +131,7 @@ class UserForm extends Form
 						'id' => 'stUsername',
 						'type' => 'text',
 						'placeholder' => Translator::i18n('Login de acesso'),
-						'class' => 'form-control',
+						'class' => 'form-control noUpper',
 						'required' => true,
 						'readonly' => $lbReadOnly,
 						'title' => Translator::i18n('Login de acesso'),
@@ -153,7 +153,7 @@ class UserForm extends Form
 							'type' => 'password',
 							'pattern' => '^.*(?=.{6,})(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).*$',
 							'placeholder' => Translator::i18n('Senha atual'),
-							'class' => 'form-control',
+							'class' => 'form-control noUpper',
 							'required' => false,
 							'title' => Translator::i18n('Senha de acesso atual (Mínimo de 6 caracteres de 0-9, a-z e A-Z)'),
 							'autocomplete' => 'off'
@@ -173,7 +173,7 @@ class UserForm extends Form
 						'type' => 'password',
 						'pattern' => '^.*(?=.{6,})(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).*$',
 						'placeholder' => Translator::i18n('Mínimo de 6 caracteres de 0-9, a-z e A-Z'),
-						'class' => 'form-control',
+						'class' => 'form-control noUpper',
 						'required' => $lbRequired,
 						'title' => Translator::i18n('Mínimo de 6 caracteres de 0-9, a-z e A-Z'),
 						'autocomplete' => 'off'
@@ -202,7 +202,7 @@ class UserForm extends Form
 						'type' => 'password',
 						'pattern' => '^.*(?=.{6,})(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).*$',
 						'placeholder' => Translator::i18n('Repita a senha'),
-						'class' => 'form-control',
+						'class' => 'form-control noUpper',
 						'required' => $lbRequired,
 						'title' => Translator::i18n('Confirmação da senha (Mínimo de 6 caracteres de 0-9, a-z e A-Z)'),
 						'autocomplete' => 'off'
@@ -227,7 +227,7 @@ class UserForm extends Form
 			'attributes' => array(
 				'id' => 'PersonName',
 				'type'  => 'text',
-				'class'	=> 'form-control',
+				'class'	=> 'form-control noUpper',
 				'title'	=> Translator::i18n('Pessoa'),
 				'required' => true,
 			),
@@ -252,7 +252,7 @@ class UserForm extends Form
 						'type' => 'Email',
 						'pattern' => '^[_a-zA-Z0-9-]+(\.[_a-zA-Z0-9-]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-zA-Z]{2,4})$',
 						'placeholder' => Translator::i18n('E-mail de contato'),
-						'class' => 'form-control',
+						'class' => 'form-control noUpper',
 						'required' => true,
 						'title' => Translator::i18n('E-mail de contato')
 					),
@@ -269,7 +269,7 @@ class UserForm extends Form
 						'id' => 'stPhoneExtension',
 						'type' => 'text',
 						'placeholder' => '0000',
-						'class' => 'form-control',
+						'class' => 'form-control noUpper',
 						'required' => false,
 						'title' => Translator::i18n('Ramal'),
 						'data-mask' => '9999'
@@ -288,7 +288,7 @@ class UserForm extends Form
 						'type' => 'text',
 						'pattern' => '^[\d\?]{1,3}\.[\d\?]{1,3}\.[\d\?]{1,3}\.[\d\?]{1,3}$',
 						'placeholder' => '???.???.???.???',
-						'class' => 'form-control',
+						'class' => 'form-control noUpper',
 						'required' => false,
 						'title' => Translator::i18n('Faixa de restrição de IP (???.???.???.???)'),
 						'data-mask' => '099.099.099.099'
@@ -305,7 +305,7 @@ class UserForm extends Form
 					'type' => 'Radio',
 					'attributes' => array(
 						'id' => 'isContextDenied',
-						'class' => 'form-control',
+						'class' => 'form-control noUpper',
 						'required' => false,
 						'title' => Translator::i18n('Restringir acesso por IP')
 					),

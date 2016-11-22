@@ -122,7 +122,7 @@ class UserGroupForm extends Form
 			'attributes' => array(
 				'id' => 'UserGroupName',
 				'type'  => 'text',
-				'class'	=> 'form-control',
+				'class'	=> 'form-control noUpper',
 				'title'	=> Translator::i18n('Grupo de usuário'),
 				'required' => false,
 			),
@@ -148,7 +148,7 @@ class UserGroupForm extends Form
 					'type' => 'DoctrineModule\Form\Element\ObjectSelect',
 					'attributes' => array(
 						'id' => 'UserGroup_id',
-						'class' => 'form-control',
+						'class' => 'form-control noUpper',
 						'title' => Translator::i18n('Grupo de usuários'),
 					),
 					'options' => array(
@@ -173,7 +173,7 @@ class UserGroupForm extends Form
 					'attributes' => array(
 						'id' => 'stName',
 						'type' => 'text',
-						'class' => 'form-control',
+						'class' => 'form-control noUpper',
 						'required' => true,
 						'readonly' => $lbReadOnly,
 						'title' => Translator::i18n('Id do grupo')
@@ -190,7 +190,7 @@ class UserGroupForm extends Form
 					'attributes' => array(
 						'id' => 'stLabel',
 						'type' => 'text',
-						'class' => 'form-control',
+						'class' => 'form-control noUpper',
 						'required' => true,
 						'title' => Translator::i18n('Nome do grupo')
 					),

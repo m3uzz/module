@@ -57,6 +57,7 @@ use Onion\Lib\Search;
 use Onion\Lib\UrlRequest;
 use Onion\Export\Pdf;
 use Onion\Log\Event;
+use Onion\Lib\Session;
 
 class UserController extends ControllerAction
 {
@@ -77,6 +78,8 @@ class UserController extends ControllerAction
 		$this->_sEntityExtended = 'User\Entity\UserExtended';
 		
 		$this->_sForm = 'User\Form\UserForm';
+		
+		//$this->_sGrid = 'User\Grid\UserGrid';
 		
 		$this->_sTitleS = Translator::i18n('Usuário');
 		
@@ -480,6 +483,11 @@ class UserController extends ControllerAction
 	
 				if ($this->entityFlush())
 				{
+				    $loSession = new Session();
+				    $loUser = $loSession->getRegister('OnionAuth');
+				    $loUser->setStPhoneExtension($laPostData['stPhoneExtension']);
+				    $loSession->setRegister('OnionAuth', $loUser);
+				    
 					$this->flashMessenger()->addMessage(array(
 						'id'=>$this->get('_sModule') . '-' . microtime(true), 'hidden'=>$this->get('_bHiddenPushMessage'), 'push'=>$this->get('_bPushMessage'),
 						'type' => 'success',

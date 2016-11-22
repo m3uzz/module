@@ -126,6 +126,7 @@ class AccessForm extends Form
 					'attributes' => array(
 						'id' => 'rememberme',
 						'type' => 'Checkbox',
+					    'value' => true,
 					),
 					'options' => array(
 						'label' => Translator::i18n('Lembrar senha?'),

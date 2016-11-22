@@ -51,6 +51,7 @@ use Onion\I18n\Translator;
 use Onion\Mvc\Controller\ControllerActionBase;
 use \Zend\Authentication;
 use \Zend\Session\SessionManager;
+use \Zend\Http\Header\SetCookie;
 use Onion\Application\Application;
 use Onion\Lib\String;
 use Onion\Mail\SendMail;
@@ -485,7 +486,7 @@ class AccessController extends ControllerActionBase
 		        
 				$poAuthService->getStorage()->write($poIdentity);
 				
-				if (isset($laData['rememberme']))
+				if ($poForm->get('rememberme')->getValue() == 1)
 				{
 					$laOptions = Config::getAppOptions('settings');
 					

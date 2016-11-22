@@ -54,34 +54,4 @@ class AddressExtended extends Address
 {
 	protected $_sEntity = 'Address\Entity\AddressExtended';
 	
-	/**
-	 * @ORM\OneToOne(targetEntity="Country\Entity\CountryBasic")
-	 * @ORM\JoinColumn(name="Country_id", referencedColumnName="id")
-	 */
-	protected $Country;
-	
-	/**
-	 * @ORM\OneToOne(targetEntity="Estate\Entity\EstateBasic")
-	 * @ORM\JoinColumn(name="Estate_id", referencedColumnName="id")
-	 */
-	protected $Estate;
-	
-	/**
-	 * @ORM\OneToOne(targetEntity="City\Entity\CityExtended")
-	 * @ORM\JoinColumn(name="City_id", referencedColumnName="id")
-	 */
-	protected $City;
-	
-	/**
-	 * @ORM\OneToOne(targetEntity="Street\Entity\StreetBasic")
-	 * @ORM\JoinColumn(name="Street_id", referencedColumnName="id")
-	 */
-	protected $Street;
-	
-	/**
-	 * @ORM\OneToOne(targetEntity="ZipCode\Entity\ZipCodeBasic")
-	 * @ORM\JoinColumn(name="ZipCode_id", referencedColumnName="id")
-	 */
-	protected $ZipCode;
-	
 }

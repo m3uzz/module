@@ -78,7 +78,7 @@ abstract class Category extends Entity
 	
 	protected $Category;
 	
-	protected $CategoryName;
+	protected $CategoryLabel;
 	
 	/**
 	 * @ORM\Column(type="string")
@@ -87,10 +87,22 @@ abstract class Category extends Entity
 	protected $stResource;
 	
 	/**
-	 * @ORM\Column(type="integer")
+	 * @ORM\Column(type="string")
 	 * @ORM\Column(nullable=false)
 	 */
 	protected $stValue;
+	
+	/**
+	 * @ORM\Column(type="string")
+	 * @ORM\Column(nullable=false)
+	 */
+	protected $stLabel;
+	
+	/**
+	 * @ORM\Column(type="string")
+	 * @ORM\Column(nullable=false)
+	 */
+	protected $stLocale = 'pt-br';	
 		
 	/** 
 	 * @ORM\Column(type="datetime") 
@@ -114,7 +126,7 @@ abstract class Category extends Entity
 	 * @ORM\Column(type="boolean") 
 	 * @ORM\Column(nullable=true)
 	 */
-	protected $isActive = 1;
+	protected $isActive = '1';
 
 	
 	/**
@@ -152,6 +164,20 @@ abstract class Category extends Entity
 		return $this;
 	}
 	
+
+	/**
+	 * 
+	 */
+	public function getCategoryLabel ()
+	{
+		if (is_object($this->Category))
+		{
+			$this->CategoryLabel = $this->Category->getLabel();
+		}
+		
+		return $this->CategoryLabel;
+	}
+	
 	
 	/**
 	 * (non-PHPdoc)
@@ -163,16 +189,14 @@ abstract class Category extends Entity
 		{
 			switch ($psProperty)
 			{
-				case 'dtInsert':
-				case 'dtUpdate':
-					return String::getDateTimeFormat($this->$psProperty, 1);
-					break;
+				case 'CategoryLabel':
+					return $this->getCategoryLabel();
+				break;
 				default:
 					return $this->$psProperty;
-			}
-		}
+			}			
+		}		
 	}
-	
 	
 	/**
 	 * (non-PHPdoc)
@@ -180,6 +204,7 @@ abstract class Category extends Entity
 	 */
 	public function getObject ()
 	{
+	    $this->getCategoryLabel();
 		return $this;
 	}
 	
@@ -193,11 +218,14 @@ abstract class Category extends Entity
 		$laData['id'] = $this->id;
 		$laData['User_id'] = $this->User_id;
 		$laData['Category_id'] = $this->Category_id;
+	    $laData['CategoryLabel'] = $this->getCategoryLabel();
 		$laData['Category'] = $this->Category;
 		$laData['stResource'] = $this->stResource;
 		$laData['stValue'] = $this->stValue;
-		$laData['dtInsert'] = String::getDateTimeFormat($this->dtInsert, 1);
-		$laData['dtUpdate'] = String::getDateTimeFormat($this->dtUpdate, 1);
+	    $laData['stLabel'] = $this->stLabel;
+	    $laData['stLocale'] = $this->stLocale;
+		$laData['dtInsert'] = $this->dtInsert;
+		$laData['dtUpdate'] = $this->dtUpdate;
 		$laData['numStatus'] = $this->numStatus;
 		$laData['isActive'] = $this->isActive;
 	

@@ -51,6 +51,7 @@ use Onion\Paginator\Pagination;
 use Onion\Application\Application;
 use Onion\Lib\Search;
 use Onion\Lib\String;
+use Onion\Config\Config;
 
 class CategoryController extends ControllerAction
 {
@@ -87,8 +88,11 @@ class CategoryController extends ControllerAction
 		$this->_aGridCols = array(
 			'id' => Translator::i18n('Id'),
 			'stResource' => Translator::i18n('Recurso'),
+		    Translator::i18n('Categoria Pai'),
 			'stValue' => Translator::i18n('Valor'),
-			'Category_id' => Translator::i18n('Categoria')
+		    'stLabel' => Translator::i18n('Título'),
+		    'stLocale' => Translator::i18n('Língua'),
+		    'dtInsert' => Translator::i18n('Cadastro')
 		);
 		
 		$this->_aGridAlign = array();
@@ -100,8 +104,11 @@ class CategoryController extends ControllerAction
 		$this->_aGridFields = array(
 			'id',
 			'stResource',
+		    'CategoryLabel',
 			'stValue',
-			'Category_id'
+		    'stLabel',
+		    'stLocale',
+		    'dtInsert'
 		);
 		
 		$this->_nGridNumRows = 12;
@@ -112,6 +119,8 @@ class CategoryController extends ControllerAction
 			'id' => Translator::i18n('Id'),
 			'stResource' => Translator::i18n('Recurso'),
 			'stValue' => Translator::i18n('Valor'),
+		    'stLabel' => Translator::i18n('Título'),
+		    'stLocale' => Translator::i18n('Língua'),		        
 		);
 		
 		$this->_aSearchGridAlign = array();
@@ -124,10 +133,92 @@ class CategoryController extends ControllerAction
 			'id',
 			'stResource',
 			'stValue',
+		    'stLabel',
+		    'stLocale',
 		);
 		
-		$this->_sSearchLabelField = 'stValue';
+		$this->_sSearchLabelField = 'stLabel';
 		
 		$this->_nSearchGridNumRows = 6;		
 	}
+	
+	
+	/**
+	 * 
+	 * @param string $psField
+	 * @param mix $pmValue
+	 * @return string
+	 */
+	public function formatFieldToGrid ($psField, $pmValue)
+	{
+		switch ($psField)
+		{
+			case 'dtInsert':
+			case 'dtUpdate':
+				return String::getDateTimeFormat($pmValue, 1);
+				break;
+			default:
+				return $pmValue;
+		}	    
+	}
+	
+	
+	/**
+	 * 
+	 * @param object $poForm
+	 */
+	public function addFormSettings ($poForm)
+	{
+	    $laResouce = array();
+	    $laLocale = array();
+	    
+	    $laModules = Config::getAppOptions('modules');
+
+	    if (is_array($laModules) && isset($laModules['available']))
+	    {
+	        foreach ($laModules['available'] as $lsResource => $lbActive)
+	        {
+	            if ($lbActive)
+	            {
+	                $laResouce[$lsResource] = strtoupper($lsResource);
+	            }
+	        }
+	    }
+        	    
+	    asort($laResouce);
+	    $loResource = $poForm->get('stResource');
+		$loResource->setValueOptions($laResouce);
+	
+		$laTranslator = Config::getAppOptions('translator');
+		
+		$laOptions = $this->getEntityManager()->getRepository('Options\Entity\OptionsBasic')->findBy(array(
+		    'stResource' => 'options',
+		    'stGroup' => 'stLocale',
+		    'stLocale' => $laTranslator['locale2'],
+		    'isActive' => '1',
+		    'numStatus' => '0',
+		));
+		
+		if (is_array($laOptions))
+		{
+		    foreach ($laOptions as $loOption)
+		    {
+		        $laLocale[$loOption->get('stValue')] = $loOption->get('stLabel');
+		    }
+		}
+		
+		asort($laLocale);
+		$loLocale = $poForm->get('stLocale');
+		$loLocale->setValueOptions($laLocale);
+	}
+	
+	
+	/**
+	 * 
+	 * @param object $poForm
+	 */
+	public function editFormSettings ($poForm)
+	{
+	    $this->addFormSettings($poForm);
+	}	
 }
